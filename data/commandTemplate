@@ -1,0 +1,11 @@
+module.exports = {
+	name: 'name',
+	description: 'description',
+	usage: '/commandName [args]',
+	class: 'Wholesome/Random/Entertaining/Useful/Repetitive/NSFW/Decisions',
+	requiresArgs: true/false,
+	utterances: [],
+	execute(msg, args, client) {
+		
+	},
+};
