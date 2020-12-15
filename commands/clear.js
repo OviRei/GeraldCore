@@ -7,8 +7,11 @@ module.exports = {
     utterances: ["delete messages", "delete", "bulk delete", "clear the chat", "remove the spam"],
     execute(msg, args) {
         var messageCount = parseInt(args[0], 10);
-        msg.channel.bulkDelete(messageCount).then(() => {
-            msg.channel.send("Deleted " + messageCount + " messages");
-        });
+        messageCount++;
+        if (messageCount > 100) {
+            messageCount = 100;
+        }
+        msg.delete();
+        msg.channel.bulkDelete(messageCount)
     },
 };

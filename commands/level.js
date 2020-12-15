@@ -30,7 +30,7 @@ module.exports = {
                 var xpToNext = (rankNumber * 30 ** 2) - experience;
                 const embed = new Discord.MessageEmbed()
                     .setColor(color)
-                    .setThumbnail(user.avatarURL())
+                    .setThumbnail(user.displayAvatarURL({ size: 2048 }))
                     .addField(`${user.tag}`, `${user}`, false)
                     .addField("🎖 XP: ", "`" + experience + "`", true)
                     .addField("🎖 Level: ", "`" + rankNumber + "`", true)

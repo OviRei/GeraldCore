@@ -95,10 +95,18 @@ module.exports = {
 
         content = msg.content.substr(msg.content.indexOf("```") + 3, msg.content.length);
         let language = content.substr(0, content.indexOf('\n')).trim();
-        console.log(language);
+        console.log("'" + language + "'");
 
-        let source = msg.content.substring(msg.content.indexOf(language) + language.length, msg.content.length);
+        var source;
+        if (language == "c") {
+            source = msg.content.substring(msg.content.indexOf("```c") + 4, msg.content.length);
+        } else {
+            source = msg.content.substring(msg.content.indexOf(language) + language.length, msg.content.length);
+        }
+
         source = source.replace(/```+/g, "");
+
+        console.log(source);
 
         langObj = languages.find(l => l.name == language);
         if (langObj == null) {

@@ -18,7 +18,7 @@ module.exports = {
         if (args[0] === "default") {
             finalPrefix = defaultPrefix;
         } else {
-            finalPrefix = msg.content.substr(prefix.length + 7, msg.content.length);
+            finalPrefix = args[0];
         }
 
         await db.commands.find({ ID: msg.guild.id }).toArray(function(err, posts) {

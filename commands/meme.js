@@ -1,44 +1,39 @@
-const randomPuppy = require('random-puppy');
+const axios = require("axios");
 const { color } = require('../data/config.json');
 const Discord = require("discord.js");
 module.exports = {
     name: 'meme',
-    description: 'Get a random meme',
-    usage: '/meme [subreddit] leave blank for a random subreddit',
-    class: 'Random',
-    requiresArgs: false,
-    utterances: ["show me a meme", "show me memes", "memes", "reddit", "subreddit", "random meme"],
+    description: 'Create memes automatically! To use, set a template name, then seperate the template name, top and bottom text (optional) with dashes.',
+    usage: '/meme [template name] [-top text] [-bottom text]\nEG: /meme confused confusing confusion -what -what in the fuck',
+    class: 'Entertaining',
+    requiresArgs: true,
+    utterances: ["show me a meme", "show me memes", "memes", "imgflip", "imgflip meme", "create a meme"],
     execute(msg, args) {
-        const reddit = [
-            "Meme",
-            "dankmemes",
-            "dankmeme",
-            "wholesomememes",
-            "MemeEconomy",
-            "ihadastroke",
-            "im14andthisisdeep",
-            "NotMyJob",
-            "boomerhumour",
-            "195",
-            "lovesomememes"
-        ];
-        var subreddit;
-        if (!args[0]) {
-            subreddit = reddit[Math.floor(Math.random() * reddit.length)];
-        } else {
-            subreddit = args[0];
-        }
-        try {
-            randomPuppy(subreddit).then(async url => {
-                const memeEmbed = new Discord.MessageEmbed()
-                    .setColor(color)
-                    .setTitle("r/" + subreddit)
-                    .setImage(url);
-                msg.channel.send(memeEmbed);
+        //Gather Arguments
+        args = args.join(" ");
+        args = args.split(/-+/g);
+        template = args[0];
+        top = args[1];
+        bottom = args[2];
+        //Post Request
+        axios
+            .post('https://fyouron-api.herokuapp.com/', {
+                template_name: template,
+                top_text: top,
+                bottom_text: bottom
             })
-        } catch (err) {
-            console.error(err);
-            msg.channel.send("Invalid Subreddit / No data collected");
-        }
+            .then((res) => {
+                imageURL = res.data;
+                const embed = new Discord.MessageEmbed()
+                    .setColor(color)
+                    .setTitle("Image URL Here!")
+                    .setURL(imageURL)
+                    .setImage(imageURL)
+                msg.channel.send(embed);
+            })
+            .catch((error) => {
+                msg.channel.send("Something went wrong!")
+            })
+
     },
 };

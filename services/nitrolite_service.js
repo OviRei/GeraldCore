@@ -30,7 +30,7 @@ module.exports = {
         try {
             if (changed) {
                 msg.channel.createWebhook(name, {
-                        avatar: msg.author.avatarURL(),
+                        avatar: msg.author.displayAvatarURL({ size: 2048 }),
                     })
                     .then(webhook => {
                         webhook.send(final).then(message => webhook.delete());

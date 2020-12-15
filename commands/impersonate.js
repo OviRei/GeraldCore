@@ -27,7 +27,7 @@ module.exports = {
         text.splice(0, 2);
         final = text.join(" ");
         msg.channel.createWebhook(name, {
-                avatar: msg.mentions.users.first().avatarURL(),
+                avatar: msg.mentions.users.first().displayAvatarURL({ size: 2048 }),
             })
             .then(webhook => {
                 webhook.send(final).then(message => webhook.delete());

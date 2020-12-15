@@ -42,6 +42,15 @@ function updateStatus() {
 
     var memberCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)
 
+    today = new Date();
+    var cmas = new Date(today.getFullYear(), 11, 25);
+    if (today.getMonth() == 11 && today.getDate() > 25) {
+        cmas.setFullYear(cmas.getFullYear() + 1);
+    }
+    var one_day = 1000 * 60 * 60 * 24;
+    daysLeftMessage = Math.ceil((cmas.getTime() - today.getTime()) / (one_day)) +
+        " days to Christmas!";
+
     switch (statusItem) {
         case 0:
             client.user.setActivity(activity);
@@ -55,6 +64,11 @@ function updateStatus() {
 
         case 2:
             client.user.setActivity(memberCount + " members!", { type: 'WATCHING' });
+            statusItem++;
+            break;
+
+        case 3:
+            client.user.setActivity(daysLeftMessage, { type: 'WATCHING' });
             statusItem = 0;
             break;
     }
@@ -81,6 +95,7 @@ function runCommand(commandName, message, args, client, prefix) {
     try {
         command.execute(message, args, client, prefix);
     } catch (error) {
+        console.log(error);
         //Log execution errors
         client.users.cache.get(owner).send("Execution error in\n> `" + message.guild.name + "`\n> `" + message.channel.name + "`\n> Executed by user: `" + message.author.tag + "`\n> Command: " + commandName + "\n Error: " + error + "\n" + error.stack);
         if (message.channel.type == "dm") {
@@ -103,14 +118,16 @@ function runCommand(commandName, message, args, client, prefix) {
 
 //Command Host Script
 function commandHost(message, client) {
+    content = message.content.replace("р", "p");
+    content = content.replace("h", "h");
     //Command Decision Block
     if (blacklist.includes(message.author.id)) {
         return;
     }
     if (message.channel.type == "dm") {
         prefix = defaultPrefix;
-        if (message.content.startsWith(prefix) && !message.author.bot) {
-            args = message.content.slice(prefix.length).trim().split(/ |\n+/g);
+        if (content.startsWith(prefix) && !message.author.bot) {
+            args = content.slice(prefix.length).trim().split(/ |\n+/g);
             command = args.shift().toLowerCase()
             runCommand(command, message, args, client, prefix);
         }
@@ -123,8 +140,8 @@ function commandHost(message, client) {
             if (!posts.length) {
                 enabled = true;
                 prefix = defaultPrefix;
-                if (message.content.startsWith(prefix) && !message.author.bot) {
-                    args = message.content.slice(prefix.length).trim().split(/ |\n+/g);
+                if (content.startsWith(prefix) && !message.author.bot) {
+                    args = content.slice(prefix.length).trim().split(/ |\n+/g);
                     command = args.shift().toLowerCase()
                     runCommand(command, message, args, client, prefix);
                 }
@@ -146,9 +163,9 @@ function commandHost(message, client) {
                 if (!whitelist.includes(message.channel.id)) {
                     return;
                 }
-                if (message.content.startsWith(prefix) && !message.author.bot) {
+                if (content.startsWith(prefix) && !message.author.bot) {
 
-                    args = message.content.slice(prefix.length).trim().split(/ |\n+/g);
+                    args = content.slice(prefix.length).trim().split(/ |\n+/g);
                     command = args.shift().toLowerCase()
 
                     if (posts[0].DISABLED == null) {

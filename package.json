@@ -1,12 +1,15 @@
 {
-    "name": "gerald-10.x",
-    "version": "10.0.0",
+    "name": "gerald-9.x",
+    "version": "9.1.0",
     "description": "Gerald - A General Purpose Discord Bot",
     "main": "GeraldCore.js",
     "gypfile": true,
     "scripts": {
         "train": "node nlptrainer.js",
-        "start": "pm2 start GeraldCore.js",
+        "start": "pm2 start ecosystem.config.js --no-autorestart --watch ./commands --watch ./services",
+        "monitor": "pm2 monit",
+        "stop": "pm2 stop all",
+        "restart": "pm2 restart all",
         "build": "node-gyp rebuild"
     },
     "author": "ElementalMP4",

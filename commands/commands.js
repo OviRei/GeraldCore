@@ -49,6 +49,10 @@ module.exports = {
             } else {
                 console.log("Updated");
                 disabled = posts[0].DISABLED;
+                if (disabled == undefined && !enabled) {
+                    disabled = [];
+                    disabled.push(command.name)
+                }
                 if (disabled.includes(command.name)) {
                     if (enabled) {
                         index = disabled.indexOf(command.name);
