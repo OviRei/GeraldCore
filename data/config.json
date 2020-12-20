@@ -1,0 +1,11 @@
+{
+    "defaultPrefix": "/",
+    "token": "",
+    "activity": "",
+    "owner": "",
+    "admins": [],
+    "blacklist": [],
+    "color": "#eb7300",
+    "botName": "Gerald",
+    "version": "9.1.1"
+}
