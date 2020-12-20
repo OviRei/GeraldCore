@@ -48,10 +48,6 @@ module.exports = {
         decisions = decisions.filter(function(el) {
             return el != "";
         });
-        var Currency = commands.map(command => { if (command.class === "Currency") { return '`' + command.name + '`' } else { return "" } });
-        Currency = Currency.filter(function(el) {
-            return el != "";
-        });
 
         //EMBED SWITCH
         if (!args.length) {
@@ -66,7 +62,7 @@ module.exports = {
                 .addField(' NSFW 🔞', "`" + prefix + 'help nsfw`', true)
                 .addField(' Wholesome ❤', "`" + prefix + 'help wholesome`', true)
                 .addField(' Decisions 🤔', "`" + prefix + 'help decisions`', true)
-                .addField(' Currency 💵', "`" + prefix + 'help Currency`', true)
+                .addField(' Admin 🔐', "`" + prefix + 'help admin`', true)
                 .addField(' Configuration ⚙', "`" + prefix + 'help configuration`', true)
                 .addField(' Further Help 📜', "`" + prefix + 'help [command] `', true)
                 .setFooter(botName + ' - V' + version + "\nCurrent services installed: " + serviceTotal.length + "\nCurrent Commands loaded: " + commandTotal.length, iconURL)
@@ -180,23 +176,9 @@ module.exports = {
                     }
                     break;
 
-                case "currency":
-                    helpEmbed = new Discord.MessageEmbed()
-                        .setColor(color)
-                        .setURL(git)
-                        .setThumbnail(iconURL)
-                        .setTitle(botName + ' Help')
-                        .addField(' Currency 💵', Currency, true)
-                        .setFooter(botName + ' - V' + version + "\nCurrent services installed: " + serviceTotal.length + "\nCurrent Commands loaded: " + commandTotal.length, iconURL)
-                    msg.author.send(helpEmbed);
-                    if (msg.channel.type !== "dm") {
-                        msg.channel.send("You've got mail! 📫");
-                    }
-                    break;
-
                 case "admin":
                     if (!admins.includes(msg.author.id)) {
-                        return;
+                        return msg.channel.send("This category is for Gerald Admins only! 🔐");
                     }
                     helpEmbed = new Discord.MessageEmbed()
                         .setColor(color)

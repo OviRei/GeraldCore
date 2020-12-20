@@ -16,6 +16,9 @@ module.exports = {
             } else {
                 user = msg.mentions.users.first();
             }
+            if (!user) {
+                return msg.channel.send("User not found");
+            }
             const member = msg.guild.member(user);
             var roles = member.roles.cache.map(r => r).slice(0, -1).join("");
             if (!roles) {

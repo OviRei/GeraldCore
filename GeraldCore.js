@@ -1,5 +1,5 @@
 //Dependencies
-const { token, activity, version, botName, defaultPrefix, blacklist, owner } = require('./data/config.json');
+const { token, activity, version, botName, defaultPrefix, blacklist, owner, admins } = require('./data/config.json');
 const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -43,13 +43,16 @@ function updateStatus() {
     var memberCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)
 
     today = new Date();
-    var cmas = new Date(today.getFullYear(), 11, 25);
-    if (today.getMonth() == 11 && today.getDate() > 25) {
-        cmas.setFullYear(cmas.getFullYear() + 1);
+    xmas = new Date("December 25, " + today.getFullYear());
+    if (today > xmas) {
+        daysLeftMessage = " Merry Christmas!";
+    } else {
+        msPerDay = 24 * 60 * 60 * 1000;
+        timeLeft = (xmas.getTime() - today.getTime());
+        e_daysLeft = timeLeft / msPerDay;
+        daysLeft = Math.ceil(e_daysLeft);
+        daysLeftMessage = daysLeft + " days to Christmas!";
     }
-    var one_day = 1000 * 60 * 60 * 24;
-    daysLeftMessage = Math.ceil((cmas.getTime() - today.getTime()) / (one_day)) +
-        " days to Christmas!";
 
     switch (statusItem) {
         case 0:
@@ -86,6 +89,10 @@ function runCommand(commandName, message, args, client, prefix) {
         //Check for NSFW
     if (command.class == "NSFW" && !message.channel.nsfw) {
         return message.channel.send("**This command is only available in NSFW channels!** 🔞");
+    }
+    //Check for Admin
+    if (command.class == "Admin" && !admins.includes(message.author.id)) {
+        return message.channel.send("**This command is Gerald Admin only!** 🔐");
     }
     //Check for Args
     if (command.requiresArgs && !args.length) {
@@ -239,6 +246,9 @@ client.on('ready', () => {
     console.log("GeraldCore Version: V" + version);
 });
 
+//DEBUG LOGGER
+client.on('debug', console.log);
+
 //MESSAGE HANDLER
 client.on('message', (message) => {
     //Ignore Webhooks
@@ -247,10 +257,13 @@ client.on('message', (message) => {
     commandHost(message, client);
     serviceHost(message, client);
     //Update XP
+    if (message.channel.type == "dm") {
+        return;
+    }
     db.collection('userstat');
-    db.userstat.find({ ID: message.author.id }).toArray(function(err, posts) {
+    db.userstat.find({ ID: message.author.id, GUILD: message.guild.id }).toArray(function(err, posts) {
         if (!posts.length) {
-            db.userstat.insert({ "ID": message.author.id, "XP": 0, "LEVEL": 1 })
+            db.userstat.insert({ "ID": message.author.id, "GUILD": message.guild.id, "XP": getRandomInt(10), "LEVEL": 1 })
         } else {
             xpinc = getRandomInt(10);
             element = posts[0];
@@ -260,7 +273,7 @@ client.on('message', (message) => {
             if (xp > level * 30 ** 2) {
                 level++;
             }
-            db.userstat.update({ ID: message.author.id }, { $set: { XP: xp, LEVEL: level } });
+            db.userstat.update({ ID: message.author.id, GUILD: message.guild.id }, { $set: { XP: xp, LEVEL: level } });
         }
     })
 });

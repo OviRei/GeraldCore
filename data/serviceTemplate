@@ -1,6 +1,0 @@
-module.exports = {
-	name: 'name',
-	enabled: true/false,
-	execute(msg, args, client) {
-	},
-};

@@ -21,7 +21,7 @@ module.exports = {
         }
         //try {
         const member = msg.guild.member(user);
-        db.userstat.find({ ID: member.id }).toArray(function(err, posts) {
+        db.userstat.find({ ID: member.id, GUILD: msg.guild.id }).toArray(function(err, posts) {
             if (!posts.length) {
                 msg.channel.send("No data / invalid mention");
             } else {

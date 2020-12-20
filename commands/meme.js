@@ -24,6 +24,9 @@ module.exports = {
             })
             .then((res) => {
                 imageURL = res.data;
+                if (imageURL == "template not found") {
+                    return msg.channel.send("Couldn't find that template :(");
+                }
                 const embed = new Discord.MessageEmbed()
                     .setColor(color)
                     .setTitle("Image URL Here!")
@@ -34,6 +37,5 @@ module.exports = {
             .catch((error) => {
                 msg.channel.send("Something went wrong!")
             })
-
     },
 };

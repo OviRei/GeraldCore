@@ -1,9 +1,9 @@
-const MathEngine = require("../build/Release/MathEngine4Gerald.node");
+const MathEngine = require("../build/Release/MathEngine.node");
 const discord = require("discord.js");
 const { color } = require("../data/config.json");
 module.exports = {
     name: 'mathengine',
-    description: 'Calculate mathematical equations using a custom math engine. Options: \n\n+ add\n\n- subtract\n\n/ divide\n\n* multiply\n\n^ power\n\n( ) parenthesis\n\n[sin](param) sin of param (default is 0)\n\n[cos](param) cos of param (default is 0)\n\n[tan](param) tan of param (default is 0)\n\n[sqrt](param) square root of param (default is 0)\n\n[pi] pi(3,14...)\n\n[e] e(2,71...)',
+    description: 'Calculate mathematical equations using a custom math engine. Options: \n\n+ add\n\n- subtract\n\n/ divide\n\n* multiply\n\n^ power\n\n( ) parenthesis\n\nsin(param) sin of param (default is 0)\n\ncos(param) cos of param (default is 0)\n\ntan(param) tan of param (default is 0)\n\nsqrt(param) square root of param (default is 0)\n\n!(param) factorial of param\n\npi pi(3,14...)\n\ne e(2,71...)',
     usage: '/mathengine [calculation]',
     class: 'Useful',
     requiresArgs: true,

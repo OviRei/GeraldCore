@@ -23,7 +23,9 @@ module.exports = {
             .setColor(color)
             .setThumbnail(icon)
             .setTitle(name + " Information")
-            .setDescription("**👑 Owner ID: **" + owner + "**\n🏷 Owner Tag: **" + ownerTag + "\n🆔 ID: **" + id + "**\n📅 Created at: **" + createdAt + "**\n🌍 Region: **" + region + "**\n⛔ Content Filtration Type: **" + filtration + "**\n🔐 User Verification Level: **" + verifLevel + "**\n🚻 Member Count: **" + total + "**\n🤖 Bot Count: **" + bots + "**\n🕹 User Count: **" + users + "**")
+            .addField("Owner Information 👑", "```\n⫸ Owner ID: " + owner + "\n⫸ Owner Tag: " + ownerTag + "```")
+            .addField("General Server Info 💾", "```\n⫸ Server ID: " + id + "\n⫸ Created at: " + createdAt + "\n⫸ Region: " + region + "\n⫸ Content Filtration Type: " + filtration + "\n⫸ User Verification Level: " + verifLevel + "```")
+            .addField("Member Information 🚻", "```\n⫸ Member Count: " + total + "\n⫸ Bot Count: " + bots + "\n⫸ Total User Count: " + users + "```")
         msg.channel.send(serverEmbed);
     },
 };

@@ -13,6 +13,7 @@ module.exports = {
     async execute(msg, args, client) {
         var d = new Date
         start = d.getTime();
+        var commandResponse = Date.now() - msg.createdTimestamp + " ms";
         db.ping.find().toArray(function(err, posts) {
             var d = new Date
             end = d.getTime();
@@ -20,8 +21,9 @@ module.exports = {
             ping = Math.round(client.ws.ping);
             original = new discord.MessageEmbed()
                 .setTitle(botName + " Ping")
-                .addField("API Ping", ping + "ms")
+                .addField("Gateway Ping", ping + "ms")
                 .addField("MongoDB Ping", mdb + "ms")
+                .addField("Command Response time", commandResponse)
                 .setColor(color)
             var d = new Date
             start = d.getTime();
@@ -31,8 +33,9 @@ module.exports = {
                 res = end - start;
                 updated = new discord.MessageEmbed()
                     .setTitle(botName + " Ping")
-                    .addField("API Ping", ping + "ms")
+                    .addField("Gateway Ping", ping + "ms")
                     .addField("MongoDB Ping", mdb + "ms")
+                    .addField("Command Response time", commandResponse)
                     .addField("Client Ping", res + "ms")
                     .setColor(color)
                 sentMessage.edit(updated);
